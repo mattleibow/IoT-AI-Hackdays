@@ -11,7 +11,7 @@ steps:
     Invoke-WebRequest -Uri $url -OutFile "arduino.zip"
     [System.IO.Compression.ZipFile]::ExtractToDirectory("arduino.zip", "arduino")
 - pwsh: |
-    & arduino\arduino-builder.exe `
+    .\arduino\arduino-builder.exe `
       -hardware "arduino\hardware" `
       -tools "arduino\tools-builder" `
       -tools "arduino\hardware\tools\avr" `

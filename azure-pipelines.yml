@@ -6,7 +6,21 @@ pool:
   name: 'Hosted Windows 2019 with VS2019'
 
 steps:
- - pwsh: |
-     $url = "https://downloads.arduino.cc/arduino-1.8.10-windows.zip"
-     Invoke-WebRequest -Uri $url -OutFile "arduino.zip"
-     [System.IO.Compression.ZipFile]::ExtractToDirectory("arduino.zip", "arduino")
+- pwsh: |
+    $url = "https://downloads.arduino.cc/arduino-1.8.10-windows.zip"
+    Invoke-WebRequest -Uri $url -OutFile "arduino.zip"
+    [System.IO.Compression.ZipFile]::ExtractToDirectory("arduino.zip", "arduino")
+- pwsh: |
+    arduino\arduino-builder.exe `
+      -hardware "arduino\hardware" `
+      -tools "arduino\tools-builder" `
+      -tools "arduino\hardware\tools\avr" `
+      -built-in-libraries "arduino\libraries" `
+      -fqbn=arduino:avr:uno `
+      -build-path .\output `
+      Blinky.ino
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'output'
+    artifactName: 'output'
+    publishLocation: 'Container'

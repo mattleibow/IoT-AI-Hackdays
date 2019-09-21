@@ -19,7 +19,8 @@ void setup() {
 void loop() {
     // do stuff
     drawLine(3, 16, 31, 63);
-    drawRect(7, 16, 32, 32);
+    drawRect(7, 16, 32, 32, false);
+    drawRect(66, 16, 32, 32, true);
 
     // draw the bitmap on the screen
     Screen.draw(0, 0, 128, 8, BMP);
@@ -60,9 +61,14 @@ void drawLine(int x1, int y1, int x2, int y2) {
     }
 }
 
-void drawRect(int x, int y, int w, int h) {
-    drawLine(x, y, x + w, y);
-    drawLine(x, y, x, y + h);
-    drawLine(x, y + h, x + w, y + h);
-    drawLine(x + w, y, x + w, y + h);
+void drawRect(int x, int y, int w, int h, bool fill) {
+    if (fill) {
+        for (int yy = y; yy < y + h; yy++)
+            drawLine(x, yy, x + w, yy);
+    } else {
+        drawLine(x, y, x + w, y);
+        drawLine(x, y, x, y + h);
+        drawLine(x, y + h, x + w, y + h);
+        drawLine(x + w, y, x + w, y + h);
+    }
 }
